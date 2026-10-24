@@ -1,9 +1,40 @@
+import { useState } from 'react'
 import ProductGrid from './components/ProductGrid.jsx'
 import products from './data/products.json'
 import { contacts } from './data/store.js'
 import './App.css'
 
 function App() {
+  const [cart, setCart] = useState({})
+  const cartCount = Object.values(cart).reduce((total, quantity) => total + quantity, 0)
+  const cartProducts = products.filter((product) => cart[product.image])
+  const pricedTotal = cartProducts.reduce(
+    (total, product) => total + (Number(product.price) || 0) * cart[product.image],
+    0,
+  )
+
+  function addToCart(product) {
+    setCart((currentCart) => ({
+      ...currentCart,
+      [product.image]: (currentCart[product.image] || 0) + 1,
+    }))
+  }
+
+  function sendCartToWhatsApp() {
+    const contact = contacts[0]
+    const lines = cartProducts.map((product) => {
+      const name = product.name?.trim() || product.image
+      const price = product.price == null ? 'Price on request' : `₹${product.price}`
+      return `${cart[product.image]} × ${name} - ${price} each`
+    })
+    const hasUnpricedItems = cartProducts.some((product) => product.price == null)
+
+    lines.push(`Total: ₹${pricedTotal}${hasUnpricedItems ? ' (excluding items with price on request)' : ''}`)
+
+    const message = `Hello, I would like to order:\n${lines.join('\n')}`
+    window.open(`https://wa.me/${contact.number}?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer')
+  }
+
   return (
     <main>
       <div className="announcement">
@@ -71,7 +102,7 @@ function App() {
           </div>
           <p className="section-note">A collection for brighter homes, warmer welcomes, and one more sweet.</p>
         </div>
-        <ProductGrid products={products} />
+        <ProductGrid products={products} onAddToCart={addToCart} />
       </section>
 
       <footer className="site-footer">
@@ -82,6 +113,16 @@ function App() {
         <p>Made to make your celebrations glow.</p>
         <a href="#top" className="back-to-top">Back to top ↑</a>
       </footer>
+      <button
+        className="floating-cart"
+        type="button"
+        disabled={cartCount === 0}
+        onClick={sendCartToWhatsApp}
+        aria-label={cartCount === 0 ? 'Cart is empty' : `Send ${cartCount} ${cartCount === 1 ? 'item' : 'items'} to WhatsApp`}
+      >
+        <span>Send cart to WhatsApp</span>
+        <span className="cart-count">{cartCount}</span>
+      </button>
     </main>
   )
 }

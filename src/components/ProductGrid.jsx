@@ -4,7 +4,7 @@ const images = import.meta.glob('../assets/products/*.{png,jpg,jpeg,webp,avif}',
   query: '?url',
 })
 
-function ProductGrid({ products }) {
+function ProductGrid({ products, onAddToCart }) {
   if (products.length === 0) {
     return (
       <div className="empty-catalog">
@@ -40,8 +40,10 @@ function ProductGrid({ products }) {
               {product.tag && <span className="product-tag">{product.tag}</span>}
             </div>
             <div className="product-details">
-              <h3>{product.name}</h3>
               <p>{product.price == null ? 'Price on request' : new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(product.price)}</p>
+              <button className="add-to-cart" type="button" onClick={() => onAddToCart(product)}>
+                Add to cart
+              </button>
             </div>
           </article>
         )
