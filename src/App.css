@@ -349,7 +349,11 @@
 .product-details p { color: #a45236; font-size: 13px; font-weight: 700; white-space: nowrap; }
 .add-to-cart { min-height: 34px; padding: 0 11px; border: 1px solid #315b47; background: transparent; color: #315b47; cursor: pointer; font-size: 11px; white-space: nowrap; transition: background 150ms ease, color 150ms ease; }
 .add-to-cart:hover { background: #315b47; color: #fffaf0; }
-.add-to-cart:focus-visible, .floating-cart:focus-visible { outline: 3px solid #df9a4f; outline-offset: 3px; }
+.quantity-control { min-height: 34px; display: inline-grid; grid-template-columns: 34px 32px 34px; align-items: center; border: 1px solid #315b47; color: #315b47; }
+.quantity-button { width: 34px; height: 32px; display: grid; place-items: center; border: 0; background: transparent; color: inherit; cursor: pointer; font-size: 18px; line-height: 1; }
+.quantity-button:hover { background: #e8efe7; }
+.quantity-value { text-align: center; color: #203c30; font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.add-to-cart:focus-visible, .quantity-button:focus-visible, .floating-cart:focus-visible { outline: 3px solid #df9a4f; outline-offset: 3px; }
 .floating-cart { position: fixed; z-index: 5; right: 24px; bottom: 24px; display: inline-flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 15px 0 18px; border: 0; background: #234738; color: #fffaf0; box-shadow: 0 8px 24px rgb(26 43 34 / 24%); cursor: pointer; font-size: 13px; font-weight: 700; transition: background 150ms ease, transform 150ms ease, opacity 150ms ease; }
 .floating-cart:not(:disabled):hover { background: #315b47; transform: translateY(-2px); }
 .floating-cart:disabled { background: #68756d; opacity: 0.65; cursor: not-allowed; box-shadow: none; }
@@ -396,6 +400,8 @@
   .mobile-break { display: initial; }
   .product-details { align-items: stretch; flex-direction: column; gap: 8px; }
   .add-to-cart { width: 100%; }
+  .quantity-control { width: 100%; grid-template-columns: 1fr 32px 1fr; }
+  .quantity-button { width: 100%; }
   .floating-cart { right: 14px; bottom: 14px; min-height: 48px; }
   .site-footer { align-items: flex-start; flex-wrap: wrap; }
   .site-footer p { order: 1; width: 100%; }

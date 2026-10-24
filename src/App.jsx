@@ -20,6 +20,21 @@ function App() {
     }))
   }
 
+  function changeQuantity(product, amount) {
+    setCart((currentCart) => {
+      const quantity = (currentCart[product.image] || 0) + amount
+      const nextCart = { ...currentCart }
+
+      if (quantity <= 0) {
+        delete nextCart[product.image]
+      } else {
+        nextCart[product.image] = quantity
+      }
+
+      return nextCart
+    })
+  }
+
   function sendCartToWhatsApp() {
     const contact = contacts[0]
     const lines = cartProducts.map((product) => {
@@ -102,7 +117,12 @@ function App() {
           </div>
           <p className="section-note">A collection for brighter homes, warmer welcomes, and one more sweet.</p>
         </div>
-        <ProductGrid products={products} onAddToCart={addToCart} />
+        <ProductGrid
+          products={products}
+          quantities={cart}
+          onAddToCart={addToCart}
+          onChangeQuantity={changeQuantity}
+        />
       </section>
 
       <footer className="site-footer">
